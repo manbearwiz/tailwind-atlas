@@ -1,3 +1,9 @@
 #!/usr/bin/env node
 
-import './dist/cli.js';
+import { main } from './dist/tailwind-atlas.js';
+
+const [, , command, path] = process.argv;
+
+if (command && path) {
+  main(command, path);
+}

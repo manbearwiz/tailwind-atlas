@@ -12,7 +12,7 @@ export function findCandidates(base: string) {
   return candidates;
 }
 
-export default function main(command: string, path: string) {
+export function main(command: string, path: string) {
   const base = resolve(path);
   const candidates = findCandidates(base);
 
@@ -32,10 +32,4 @@ export default function main(command: string, path: string) {
     return;
   }
   return;
-}
-
-const [, , command, path] = process.argv;
-
-if (command && path) {
-  main(command, path);
 }
