@@ -13,13 +13,13 @@ describe('buildSafelist', () => {
     expect(safelist).toMatchInlineSnapshot(`
       [
         {
-          "pattern": /\\^relative\\$/,
+          "pattern": "/^relative$/",
         },
         {
-          "pattern": /\\^block\\$/,
+          "pattern": "/^block$/",
         },
         {
-          "pattern": /\\^w-full\\$/,
+          "pattern": "/^w-full$/",
         },
       ]
     `);
@@ -39,7 +39,7 @@ describe('buildSafelist', () => {
     expect(safelist).toMatchInlineSnapshot(`
       [
         {
-          "pattern": /\\^text-\\(\\?:blue-500\\|blue-600\\|yellow-500\\|yellow-600\\)\\$/,
+          "pattern": "/^text-(?:blue-500|blue-600|yellow-500|yellow-600)$/",
         },
       ]
     `);
@@ -55,7 +55,7 @@ describe('buildSafelist', () => {
     expect(safelist).toMatchInlineSnapshot(`
       [
         {
-          "pattern": /\\^text-\\(\\?:zinc-950\\|zinc-700\\)\\$/,
+          "pattern": "/^text-(?:zinc-950|zinc-700)$/",
           "variants": [
             "hover",
           ],

@@ -51,7 +51,7 @@ export function buildSafelist(candidates: DesignSystemCandidate[]) {
     ([root, { variants, values }]) => ({
       pattern: new RegExp(
         values?.length ? `^${root}-(?:${values.join('|')})$` : `^${root}$`,
-      ),
+      ).toString(),
       ...(variants.length && { variants: [...new Set(variants)] }),
     }),
   );
