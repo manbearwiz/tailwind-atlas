@@ -97,9 +97,7 @@ If you want to generate a safelist, you can use the `safelist` command. This wil
 ```bash
 $ npx tailwind-atlas safelist ./tw-test/**/*.html
 [
-  {
-    "pattern": "/^absolute$/"
-  },
+  "absolute",
   {
     "pattern": "/^text-(?:zinc-400|zinc-700)$/",
     "variants": [
