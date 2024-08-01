@@ -47,13 +47,15 @@ function bundleCandidates(
  */
 export function buildSafelist(candidates: DesignSystemCandidate[]) {
   const parsed = bundleCandidates(candidates);
-  const safelist = Object.entries(parsed).map(
-    ([root, { variants, values }]) => ({
-      pattern: new RegExp(
-        `^${root}${values ? `-${values.length > 1 ? `(?:${values.join('|')})` : values[0]}` : ''}$`,
-      ).toString(),
-      ...(variants.length && { variants: [...new Set(variants)] }),
-    }),
+  const safelist = Object.entries(parsed).map(([root, { variants, values }]) =>
+    variants.length || values?.length
+      ? {
+          pattern: new RegExp(
+            `^${root}${values ? `-${values.length > 1 ? `(${values.join('|')})` : values[0]}` : ''}$`,
+          ).toString(),
+          ...(variants.length && { variants: [...new Set(variants)] }),
+        }
+      : root,
   );
   return safelist;
 }
