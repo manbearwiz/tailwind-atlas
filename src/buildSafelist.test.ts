@@ -31,6 +31,7 @@ describe('buildSafelist', () => {
       'text-blue-600',
       'text-yellow-500',
       'text-yellow-600',
+      'rounded-lg',
     ];
     const parsed = parseCandidates(candidates);
 
@@ -40,6 +41,9 @@ describe('buildSafelist', () => {
       [
         {
           "pattern": "/^text-(?:blue-500|blue-600|yellow-500|yellow-600)$/",
+        },
+        {
+          "pattern": "/^rounded-lg$/",
         },
       ]
     `);
