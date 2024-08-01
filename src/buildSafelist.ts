@@ -50,7 +50,7 @@ export function buildSafelist(candidates: DesignSystemCandidate[]) {
   const safelist = Object.entries(parsed).map(
     ([root, { variants, values }]) => ({
       pattern: new RegExp(
-        values?.length ? `^${root}-(?:${values.join('|')})$` : `^${root}$`,
+        `^${root}${values ? `-${values.length > 1 ? `(?:${values.join('|')})` : values[0]}` : ''}$`,
       ).toString(),
       ...(variants.length && { variants: [...new Set(variants)] }),
     }),
