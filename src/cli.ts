@@ -1,16 +1,7 @@
-import { scanDir } from '@tailwindcss/oxide';
 import { resolve } from 'pathe';
 import { buildSafelist } from './buildSafelist';
+import { findCandidates } from './findCandidates';
 import { parseCandidates } from './parseCandidates';
-/**
- * Scans the given directory for candidates.
- * @param base The base directory to scan.
- * @returns The candidates found in the directory.
- */
-export function findCandidates(base: string) {
-  const { candidates } = scanDir({ base, globs: true });
-  return candidates;
-}
 
 export function main(command: string, path: string) {
   const base = resolve(path);
