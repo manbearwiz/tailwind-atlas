@@ -16,15 +16,78 @@
 The find command is a simple wrapper around `@tailwindcss/oxide` to find all the symbols that could potentially be tailwindcss classes in your html files. This might be useful for debugging or if you need to do some additional filtering or processing on the classes before you safelist them.
 
 ```bash
-npx tailwind-atlas find ./tw-test/**/*.html
+$ npx tailwind-atlas find ./tw-test/**/*.html
+[
+  "absolute",
+  "hover:text-zinc-400",
+  "ring-zinc-950/5",
+  "text-zinc-700",
+]
 ```
 
 ### Parse Candidates
 
-If you only are concerned with valid tailwind classes, you can use the `parse` command. This will use `@tailwindcss/oxide` to find the tokens and then `tailwind` to validate and parse the tokens to find the classes that are actually used.
+The parse command will find the classes in your files and parse them, outputting candidate objects with information like variants and values.
 
 ```bash
-npx tailwind-atlas parse ./tw-test/**/*.html
+$ npx tailwind-atlas parse ./tw-test/**/*.html
+[
+  {
+    "kind": "static",
+    "root": "absolute",
+    "variants": [],
+    "negative": false,
+    "important": false
+  },
+  {
+    "kind": "functional",
+    "root": "text",
+    "modifier": null,
+    "value": {
+      "kind": "named",
+      "value": "zinc-400",
+      "fraction": null
+    },
+    "variants": [
+      {
+        "kind": "static",
+        "root": "hover",
+        "compounds": true
+      }
+    ],
+    "negative": false,
+    "important": false
+  },
+  {
+    "kind": "functional",
+    "root": "ring",
+    "modifier": {
+      "kind": "named",
+      "value": "5"
+    },
+    "value": {
+      "kind": "named",
+      "value": "zinc-950",
+      "fraction": "950/5"
+    },
+    "variants": [],
+    "negative": false,
+    "important": false
+  },
+  {
+    "kind": "functional",
+    "root": "text",
+    "modifier": null,
+    "value": {
+      "kind": "named",
+      "value": "zinc-700",
+      "fraction": null
+    },
+    "variants": [],
+    "negative": false,
+    "important": false
+  }
+]
 ```
 
 ### Safelist
@@ -32,5 +95,19 @@ npx tailwind-atlas parse ./tw-test/**/*.html
 If you want to generate a safelist, you can use the `safelist` command. This will find and parse the classes and then output the classes in a format that can be used in your `tailwind.config.js` file.
 
 ```bash
-npx tailwind-atlas safelist ./tw-test/**/*.html
+$ npx tailwind-atlas safelist ./tw-test/**/*.html
+[
+  {
+    "pattern": "/^absolute$/"
+  },
+  {
+    "pattern": "/^text-(?:zinc-400|zinc-700)$/",
+    "variants": [
+      "hover"
+    ]
+  },
+  {
+    "pattern": "/^ring-(?:zinc-950)$/"
+  }
+]
 ```
