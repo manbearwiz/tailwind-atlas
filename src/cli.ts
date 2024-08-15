@@ -15,9 +15,9 @@ export async function main() {
         .default('json'),
     )
     .addOption(new Option('--no-fractions', 'Exclude fractional values.'))
-    .action((path, { format, fractions }) => {
+    .action(async (path, { format, fractions }) => {
       const base = resolve(path);
-      const candidates = findCandidates(base, fractions);
+      const candidates = await findCandidates(base, fractions);
 
       if (format === 'csv') {
         console.log(candidates.join('\n'));
@@ -29,9 +29,9 @@ export async function main() {
   program
     .command('parse <path>')
     .description('Parse all Tailwind CSS candidates in the given path.')
-    .action((path) => {
+    .action(async (path) => {
       const base = resolve(path);
-      const candidates = findCandidates(base);
+      const candidates = await findCandidates(base);
       const parsed = parseCandidates(candidates);
 
       console.log(JSON.stringify(parsed, null, 2));
@@ -44,7 +44,7 @@ export async function main() {
       let candidates: string[] = [];
       if (path) {
         const base = resolve(path);
-        candidates = findCandidates(base);
+        candidates = await findCandidates(base);
       } else {
         let data = '';
 
@@ -53,7 +53,7 @@ export async function main() {
         candidates = data.split('\n');
       }
 
-      const parsed = parseCandidates(candidates);
+      const parsed = await parseCandidates(candidates);
       const safelist = buildSafelist(parsed);
 
       console.log(JSON.stringify(safelist, null, 2));

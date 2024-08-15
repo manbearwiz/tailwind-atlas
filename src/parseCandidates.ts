@@ -1,6 +1,6 @@
 import { __unstable__loadDesignSystem as loadDesignSystem } from 'tailwindcss';
 
-export type DesignSystem = ReturnType<typeof loadDesignSystem>;
+export type DesignSystem = Awaited<ReturnType<typeof loadDesignSystem>>;
 export type DesignSystemCandidate = NonNullable<
   ReturnType<DesignSystem['parseCandidate']>
 >;
@@ -19,8 +19,10 @@ export function isNotNull<T>(value: T): value is NonNullable<T> {
  * @param candidates The candidates to parse.
  * @returns The parsed candidates.
  */
-export function parseCandidates(candidates: string[]): DesignSystemCandidate[] {
-  const designSystem = loadDesignSystem('');
+export async function parseCandidates(
+  candidates: string[],
+): Promise<DesignSystemCandidate[]> {
+  const designSystem = await loadDesignSystem('');
 
   return candidates
     .map((candidate) => designSystem.parseCandidate(candidate))
