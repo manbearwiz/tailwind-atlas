@@ -6,10 +6,13 @@ import { __unstable__loadDesignSystem as loadDesignSystem } from 'tailwindcss';
  * @param base The base directory to scan.
  * @returns The candidates found in the directory.
  */
-export function findCandidates(base: string, franctions = true): string[] {
-  const { candidates } = scanDir({ base, globs: true });
+export async function findCandidates(
+  base: string,
+  franctions = true,
+): Promise<string[]> {
+  const { candidates } = scanDir({ base });
 
-  const designSystem = loadDesignSystem('');
+  const designSystem = await loadDesignSystem('');
 
   return [
     ...new Set(

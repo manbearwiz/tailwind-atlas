@@ -11,12 +11,12 @@ vi.mock('@tailwindcss/oxide', () => ({
 }));
 
 describe('findCandidates', () => {
-  it('should find the candidates in the given directory', () => {
+  it('should find the candidates in the given directory', async () => {
     scanDir.mockReturnValueOnce({
       candidates: ['a', 'relative', 'com', 'block', 'w-full', 'div', 'event'],
     });
 
-    const candidates = findCandidates('.');
+    const candidates = await findCandidates('.');
 
     expect(candidates).toMatchInlineSnapshot(`
 			[
@@ -27,22 +27,22 @@ describe('findCandidates', () => {
 		`);
   });
 
-  it('should return an empty array if no candidates are found', () => {
+  it('should return an empty array if no candidates are found', async () => {
     scanDir.mockReturnValueOnce({
       candidates: [],
     });
 
-    const candidates = findCandidates('.');
+    const candidates = await findCandidates('.');
 
     expect(candidates).toMatchInlineSnapshot('[]');
   });
 
-  it('should handle malformed candidates', () => {
+  it('should handle malformed candidates', async () => {
     scanDir.mockReturnValueOnce({
       candidates: [1, null, undefined, '', 'relative', 'block', 'w-full'],
     });
 
-    const candidates = findCandidates('.');
+    const candidates = await findCandidates('.');
 
     expect(candidates).toMatchInlineSnapshot(`
       [
@@ -53,12 +53,12 @@ describe('findCandidates', () => {
     `);
   });
 
-  it('should handle candidates with values and variants', () => {
+  it('should handle candidates with values and variants', async () => {
     scanDir.mockReturnValueOnce({
       candidates: ['ring-zinc-950/5', 'hover:text-zinc-400'],
     });
 
-    const candidates = findCandidates('.');
+    const candidates = await findCandidates('.');
 
     expect(candidates).toMatchInlineSnapshot(`
       [
@@ -68,12 +68,12 @@ describe('findCandidates', () => {
     `);
   });
 
-  it('should handle duplicate candidates', () => {
+  it('should handle duplicate candidates', async () => {
     scanDir.mockReturnValueOnce({
       candidates: ['relative', 'relative', 'block', 'w-full'],
     });
 
-    const candidates = findCandidates('.');
+    const candidates = await findCandidates('.');
 
     expect(candidates).toMatchInlineSnapshot(`
       [
@@ -84,12 +84,12 @@ describe('findCandidates', () => {
     `);
   });
 
-  it('should exclude fractional values', () => {
+  it('should exclude fractional values', async () => {
     scanDir.mockReturnValueOnce({
       candidates: ['w-1/2', 'w-full'],
     });
 
-    const candidates = findCandidates('.', false);
+    const candidates = await findCandidates('.', false);
 
     expect(candidates).toMatchInlineSnapshot(`
       [
@@ -98,12 +98,12 @@ describe('findCandidates', () => {
     `);
   });
 
-  it('should handle fractional values', () => {
+  it('should handle fractional values', async () => {
     scanDir.mockReturnValueOnce({
       candidates: ['w-1/2', 'w-full'],
     });
 
-    const candidates = findCandidates('.');
+    const candidates = await findCandidates('.');
 
     expect(candidates).toMatchInlineSnapshot(`
       [
@@ -113,12 +113,12 @@ describe('findCandidates', () => {
     `);
   });
 
-  it('should filter out named fractions', () => {
+  it('should filter out named fractions', async () => {
     scanDir.mockReturnValueOnce({
       candidates: ['order-foo/order-bar', 'order-first'],
     });
 
-    const candidates = findCandidates('.', false);
+    const candidates = await findCandidates('.', false);
 
     expect(candidates).toMatchInlineSnapshot(`
       [

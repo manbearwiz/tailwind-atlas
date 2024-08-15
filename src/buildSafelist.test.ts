@@ -4,9 +4,9 @@ import { describe, expect, it } from 'vitest';
 import { parseCandidates } from './parseCandidates';
 
 describe('buildSafelist', () => {
-  it('should build the safelist from the given candidates', () => {
+  it('should build the safelist from the given candidates', async () => {
     const candidates = ['relative', 'block', 'w-full'];
-    const parsed = parseCandidates(candidates);
+    const parsed = await parseCandidates(candidates);
 
     const safelist = buildSafelist(parsed);
 
@@ -19,7 +19,7 @@ describe('buildSafelist', () => {
 		`);
   });
 
-  it('should parse the given candidates with multiple values', () => {
+  it('should parse the given candidates with multiple values', async () => {
     const candidates = [
       'text-blue-500',
       'text-blue-600',
@@ -27,7 +27,7 @@ describe('buildSafelist', () => {
       'text-yellow-600',
       'rounded-lg',
     ];
-    const parsed = parseCandidates(candidates);
+    const parsed = await parseCandidates(candidates);
 
     const safelist = buildSafelist(parsed);
 
@@ -43,10 +43,10 @@ describe('buildSafelist', () => {
     `);
   });
 
-  it('should parse the given candidates with multiple variants', () => {
+  it('should parse the given candidates with multiple variants', async () => {
     const candidates = ['hover:text-zinc-950', 'text-zinc-700'];
 
-    const parsed = parseCandidates(candidates);
+    const parsed = await parseCandidates(candidates);
 
     const safelist = buildSafelist(parsed);
 
