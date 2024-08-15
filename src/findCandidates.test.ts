@@ -53,17 +53,18 @@ describe('findCandidates', () => {
     `);
   });
 
-  it('should handle candidates with values and variants', async () => {
+  it('should handle conditional modifiers', async () => {
     scanDir.mockReturnValueOnce({
-      candidates: ['ring-zinc-950/5', 'hover:text-zinc-400'],
+      candidates: ['focus:outline-none', 'focus-visible:ring', 'hover:block'],
     });
 
     const candidates = await findCandidates('.');
 
     expect(candidates).toMatchInlineSnapshot(`
       [
-        "ring-zinc-950/5",
-        "hover:text-zinc-400",
+        "focus:outline-none",
+        "focus-visible:ring",
+        "hover:block",
       ]
     `);
   });
@@ -113,7 +114,7 @@ describe('findCandidates', () => {
     `);
   });
 
-  it('should filter out named fractions', async () => {
+  it('should filter out candidates that cannot be parsed', async () => {
     scanDir.mockReturnValueOnce({
       candidates: ['order-foo/order-bar', 'order-first'],
     });
