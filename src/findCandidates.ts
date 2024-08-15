@@ -18,12 +18,14 @@ export async function findCandidates(
     ...new Set(
       candidates.filter((candidate) => {
         const p =
-          candidate &&
-          typeof candidate === 'string' &&
-          designSystem.parseCandidate(candidate);
+          (candidate &&
+            typeof candidate === 'string' &&
+            designSystem.parseCandidate(candidate)) ||
+          undefined;
 
         return (
-          p &&
+          p?.kind &&
+          designSystem.compileAstNodes(candidate)?.node?.selector &&
           (franctions ||
             !(
               p.kind === 'functional' &&
