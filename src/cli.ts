@@ -29,10 +29,11 @@ export async function main() {
   program
     .command('parse <path>')
     .description('Parse all Tailwind CSS candidates in the given path.')
-    .action(async (path) => {
+    .addOption(new Option('--no-fractions', 'Exclude fractional values.'))
+    .action(async (path, { fractions }) => {
       const base = resolve(path);
-      const candidates = await findCandidates(base);
-      const parsed = parseCandidates(candidates);
+      const candidates = await findCandidates(base, fractions);
+      const parsed = await parseCandidates(candidates);
 
       console.log(JSON.stringify(parsed, null, 2));
     });
