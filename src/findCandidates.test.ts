@@ -83,4 +83,47 @@ describe('findCandidates', () => {
       ]
     `);
   });
+
+  it('should exclude fractional values', () => {
+    scanDir.mockReturnValueOnce({
+      candidates: ['w-1/2', 'w-full'],
+    });
+
+    const candidates = findCandidates('.', false);
+
+    expect(candidates).toMatchInlineSnapshot(`
+      [
+        "w-full",
+      ]
+    `);
+  });
+
+  it('should handle fractional values', () => {
+    scanDir.mockReturnValueOnce({
+      candidates: ['w-1/2', 'w-full'],
+    });
+
+    const candidates = findCandidates('.');
+
+    expect(candidates).toMatchInlineSnapshot(`
+      [
+        "w-1/2",
+        "w-full",
+      ]
+    `);
+  });
+
+  it('should filter out named fractions', () => {
+    scanDir.mockReturnValueOnce({
+      candidates: ['order-foo/order-bar', 'order-first'],
+    });
+
+    const candidates = findCandidates('.', false);
+
+    expect(candidates).toMatchInlineSnapshot(`
+      [
+        "order-first",
+      ]
+    `);
+  });
 });

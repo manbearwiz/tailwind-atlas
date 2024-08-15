@@ -8,7 +8,7 @@ export default {
       name: 'cli',
     },
     rollupOptions: {
-      external: ['tailwindcss', '@tailwindcss/oxide'],
+      external: ['tailwindcss', '@tailwindcss/oxide', 'commander'],
     },
     sourcemap: true,
   },

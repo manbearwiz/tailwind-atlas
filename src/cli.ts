@@ -1,26 +1,63 @@
+import { Command, Option } from 'commander';
 import { resolve } from 'pathe';
 import { buildSafelist } from './buildSafelist';
 import { findCandidates } from './findCandidates';
 import { parseCandidates } from './parseCandidates';
 
-export function main(command: string, path: string) {
-  const base = resolve(path);
-  const candidates = findCandidates(base);
+export async function main() {
+  const program = new Command('tailwind-atlas');
+  program
+    .command('find <path>')
+    .description('Find all Tailwind CSS candidates in the given path.')
+    .addOption(
+      new Option('-f, --format <format>', 'The output format.')
+        .choices(['json', 'csv'])
+        .default('json'),
+    )
+    .addOption(new Option('--no-fractions', 'Exclude fractional values.'))
+    .action((path, { format, fractions }) => {
+      const base = resolve(path);
+      const candidates = findCandidates(base, fractions);
 
-  if (command === 'find') {
-    console.log(JSON.stringify(candidates, null, 2));
-    return;
-  }
-  if (command === 'parse') {
-    const parsed = parseCandidates(candidates);
-    console.log(JSON.stringify(parsed, null, 2));
-    return;
-  }
-  if (command === 'safelist') {
-    const parsed = parseCandidates(candidates);
-    const safelist = buildSafelist(parsed);
-    console.log(JSON.stringify(safelist, null, 2));
-    return;
-  }
-  return;
+      if (format === 'csv') {
+        console.log(candidates.join('\n'));
+      } else {
+        console.log(JSON.stringify(candidates, null, 2));
+      }
+    });
+
+  program
+    .command('parse <path>')
+    .description('Parse all Tailwind CSS candidates in the given path.')
+    .action((path) => {
+      const base = resolve(path);
+      const candidates = findCandidates(base);
+      const parsed = parseCandidates(candidates);
+
+      console.log(JSON.stringify(parsed, null, 2));
+    });
+
+  program
+    .command('safelist [path]')
+    .description('Build a Tailwind CSS safelist from the given path or stdin.')
+    .action(async (path) => {
+      let candidates: string[] = [];
+      if (path) {
+        const base = resolve(path);
+        candidates = findCandidates(base);
+      } else {
+        let data = '';
+
+        for await (const chunk of process.stdin) data += chunk;
+
+        candidates = data.split('\n');
+      }
+
+      const parsed = parseCandidates(candidates);
+      const safelist = buildSafelist(parsed);
+
+      console.log(JSON.stringify(safelist, null, 2));
+    });
+
+  await program.parseAsync(process.argv);
 }
