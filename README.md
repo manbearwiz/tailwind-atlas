@@ -109,3 +109,9 @@ $ npx tailwind-atlas safelist ./tw-test/**/*.html
   }
 ]
 ```
+
+You can also use the safelist command to generate a safelist file from stdin.
+
+```bash
+npx tailwind-atlas find ./tw-test/**/*.html -f csv | npx tailwind-atlas safelist
+```
