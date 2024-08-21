@@ -1,4 +1,4 @@
-import { type DesignSystemCandidate, isNotNull } from './parseCandidates';
+import { type DesignSystemCandidate, isNotNull } from './utils';
 
 function bundleCandidates(
   candidates: DesignSystemCandidate[],

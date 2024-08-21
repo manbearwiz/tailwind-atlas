@@ -56,9 +56,9 @@
   "module": "./dist/tailwind-atlas.js",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/tailwind-atlas.js",
-      "require": "./dist/tailwind-atlas.umd.cjs",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/tailwind-atlas.umd.cjs"
     }
   },
   "bin": "./tailwind-atlas.mjs"
