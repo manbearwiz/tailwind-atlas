@@ -1,5 +1,5 @@
 import { scanDir } from '@tailwindcss/oxide';
-import { __unstable__loadDesignSystem as loadDesignSystem } from 'tailwindcss';
+import { loadDesignSystem } from './utils';
 
 /**
  * Finds the candidates in the given directory.
@@ -12,7 +12,7 @@ export async function findCandidates(
 ): Promise<string[]> {
   const { candidates } = scanDir({ base });
 
-  const designSystem = await loadDesignSystem('');
+  const designSystem = await loadDesignSystem();
 
   return [
     ...new Set(
