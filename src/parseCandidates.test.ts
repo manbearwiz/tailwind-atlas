@@ -36,6 +36,37 @@ describe('parseCandidates', () => {
     );
   });
 
+  it('should trim whitespace from the given candidates', async () => {
+    const candidates = [
+      ' relative ',
+      `
+      block
+    `,
+    ];
+    const parsed = parseCandidates(candidates);
+
+    await expect(parsed).resolves.toMatchInlineSnapshot(
+      `
+      [
+        {
+          "important": false,
+          "kind": "static",
+          "negative": false,
+          "root": "relative",
+          "variants": [],
+        },
+        {
+          "important": false,
+          "kind": "static",
+          "negative": false,
+          "root": "block",
+          "variants": [],
+        },
+      ]
+    `,
+    );
+  });
+
   it('should parse the given candidates with multiple values', async () => {
     const candidates = [
       'text-blue-500',

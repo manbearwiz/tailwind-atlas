@@ -15,6 +15,6 @@ export async function parseCandidates(
   const designSystem = await loadDesignSystem();
 
   return candidates
-    .map((candidate) => designSystem.parseCandidate(candidate))
+    .map((candidate) => designSystem.parseCandidate(candidate.trim()))
     .filter(isNotNull);
 }
