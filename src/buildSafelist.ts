@@ -11,7 +11,9 @@ function bundleCandidates(
             parsed?.variants
               ?.map((v) => (v.kind === 'static' ? v.root : ''))
               .filter(Boolean),
-            ...(parsed.kind === 'functional' ? [parsed.value?.value] : []),
+            ...(parsed.kind === 'functional' && parsed.value?.kind === 'named'
+              ? [parsed.value?.fraction ?? parsed.value.value]
+              : []),
           ] as const)
         : null,
     )
@@ -48,14 +50,16 @@ function bundleCandidates(
 export function buildSafelist(candidates: DesignSystemCandidate[]) {
   const parsed = bundleCandidates(candidates);
   const safelist = Object.entries(parsed).map(([root, { variants, values }]) =>
-    variants.length || values?.length
+    variants.length || (values?.length && values.length > 1)
       ? {
           pattern: new RegExp(
-            `^${root}${values ? `-${values.length > 1 ? `(${values.join('|')})` : values[0]}` : ''}$`,
+            `^${root}${values ? `-${`(${values.sort().join('|')})`}` : ''}$`,
           ).toString(),
-          ...(variants.length && { variants: [...new Set(variants)] }),
+          ...(variants.length && { variants: [...new Set(variants)].sort() }),
         }
-      : root,
+      : values?.length
+        ? `${root}-${values[0]}`
+        : root,
   );
   return safelist;
 }

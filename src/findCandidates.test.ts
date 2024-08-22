@@ -56,15 +56,15 @@ describe('findCandidates', () => {
       candidates: ['a', 'relative', 'com', 'block', 'w-full', 'div', 'event'],
     });
 
-    const candidates = await findCandidates('.');
+    const candidates = findCandidates('.');
 
-    expect(candidates).toMatchInlineSnapshot(`
-			[
-			  "relative",
-			  "block",
-			  "w-full",
-			]
-		`);
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
+      [
+        "relative",
+        "block",
+        "w-full",
+      ]
+    `);
   });
 
   it('should return an empty array if no candidates are found', async () => {
@@ -72,9 +72,9 @@ describe('findCandidates', () => {
       candidates: [],
     });
 
-    const candidates = await findCandidates('.');
+    const candidates = findCandidates('.');
 
-    expect(candidates).toMatchInlineSnapshot('[]');
+    await expect(candidates).resolves.toMatchInlineSnapshot('[]');
   });
 
   it('should handle malformed candidates', async () => {
@@ -82,9 +82,9 @@ describe('findCandidates', () => {
       candidates: [1, null, undefined, '', 'relative', 'block', 'w-full'],
     });
 
-    const candidates = await findCandidates('.');
+    const candidates = findCandidates('.');
 
-    expect(candidates).toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "relative",
         "block",
@@ -98,9 +98,9 @@ describe('findCandidates', () => {
       candidates: ['ring-zinc-950/5', 'hover:text-zinc-400'],
     });
 
-    const candidates = await findCandidates('.');
+    const candidates = findCandidates('.');
 
-    expect(candidates).toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "ring-zinc-950/5",
         "hover:text-zinc-400",
@@ -113,9 +113,9 @@ describe('findCandidates', () => {
       candidates: ['focus:outline-none', 'focus-visible:ring', 'hover:block'],
     });
 
-    const candidates = await findCandidates('.');
+    const candidates = findCandidates('.');
 
-    expect(candidates).toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "focus:outline-none",
         "focus-visible:ring",
@@ -129,9 +129,9 @@ describe('findCandidates', () => {
       candidates: ['relative', 'relative', 'block', 'w-full'],
     });
 
-    const candidates = await findCandidates('.');
+    const candidates = findCandidates('.');
 
-    expect(candidates).toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "relative",
         "block",
@@ -145,9 +145,9 @@ describe('findCandidates', () => {
       candidates: ['w-1/2', 'w-full'],
     });
 
-    const candidates = await findCandidates('.', false);
+    const candidates = findCandidates('.', false);
 
-    expect(candidates).toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "w-full",
       ]
@@ -159,9 +159,9 @@ describe('findCandidates', () => {
       candidates: ['w-1/2', 'w-full'],
     });
 
-    const candidates = await findCandidates('.');
+    const candidates = findCandidates('.');
 
-    expect(candidates).toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "w-1/2",
         "w-full",
@@ -174,9 +174,9 @@ describe('findCandidates', () => {
       candidates: ['order-foo/order-bar', 'order-first'],
     });
 
-    const candidates = await findCandidates('.', false);
+    const candidates = findCandidates('.', false);
 
-    expect(candidates).toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "order-first",
       ]
@@ -190,7 +190,7 @@ describe('findCandidates', () => {
 
     const candidates = findCandidates('.');
 
-    expect(candidates).resolves.toMatchInlineSnapshot(`
+    await expect(candidates).resolves.toMatchInlineSnapshot(`
       [
         "grid",
         "gap-4",
