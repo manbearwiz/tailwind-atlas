@@ -3,7 +3,7 @@ import { type DesignSystemCandidate, isNotNull } from './utils';
 function bundleCandidates(
   candidates: DesignSystemCandidate[],
 ): Record<string, { variants: string[]; values?: (string | undefined)[] }> {
-  return candidates
+  const bundled = candidates
     .map((parsed) =>
       parsed.kind === 'static' || parsed.kind === 'functional'
         ? ([
@@ -23,8 +23,8 @@ function bundleCandidates(
         if (root && acc[root]) {
           acc[root] = {
             ...acc[root],
-            variants: [...new Set([...acc[root].variants, ...variants])],
-            values: [...new Set([...(acc[root]?.values ?? []), value])],
+            variants: [...acc[root].variants, ...variants],
+            values: [...(acc[root].values ?? []), value],
           };
         } else {
           acc[root] = {
@@ -40,6 +40,16 @@ function bundleCandidates(
         { variants: string[]; values?: (string | undefined)[] }
       >,
     );
+
+  return Object.fromEntries(
+    Object.entries(bundled).map(([root, { variants, values }]) => [
+      root,
+      {
+        variants: [...new Set(variants)].filter(Boolean).sort(),
+        ...(values && { values: [...new Set(values)].filter(Boolean).sort() }),
+      } as const,
+    ]),
+  );
 }
 
 /**
@@ -53,9 +63,9 @@ export function buildSafelist(candidates: DesignSystemCandidate[]) {
     variants.length || (values?.length && values.length > 1)
       ? {
           pattern: new RegExp(
-            `^${root}${values ? `-${`(${values.sort().join('|')})`}` : ''}$`,
+            `^${root}${values ? `-${values.length > 1 ? `(${values.join('|')})` : values[0]}` : ''}$`,
           ).toString(),
-          ...(variants.length && { variants: [...new Set(variants)].sort() }),
+          ...(variants.length && { variants }),
         }
       : values?.length
         ? `${root}-${values[0]}`
