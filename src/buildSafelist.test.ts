@@ -157,4 +157,22 @@ describe('buildSafelist', () => {
       ]
     `);
   });
+
+  it('should support a mix of candidates with variants and values', async () => {
+    const candidates = ['grow', 'grow-0', 'md:grow'];
+    const parsed = await parseCandidates(candidates);
+
+    const safelist = buildSafelist(parsed);
+
+    expect(safelist).toMatchInlineSnapshot(`
+      [
+        {
+          "pattern": "/^grow-0$/",
+          "variants": [
+            "md",
+          ],
+        },
+      ]
+    `);
+  });
 });
